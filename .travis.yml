@@ -1,0 +1,23 @@
+language: node_js
+node_js:
+- "4"
+before_install:
+- openssl aes-256-cbc -K $encrypted_3938bb5f8c12_key -iv $encrypted_3938bb5f8c12_iv
+  -in travis_rsa.enc -out ~/.ssh/id_rsa -d
+- chmod 600 ~/.ssh/id_rsa
+- eval $(ssh-agent)
+- ssh-add ~/.ssh/id_rsa
+- cp ssh_config ~/.ssh/config
+- git config --global user.name "sunxfancy"
+- git config --global user.email "sunxfancy@gmail.com"
+- git clone -b master git@github.com:sunxfancy/sunxfancy.github.io.git .deploy_git
+git:
+  depth: 1
+sudo: true
+branches:
+  only:
+  - master
+install:
+- npm install
+script:
+- npm run build
